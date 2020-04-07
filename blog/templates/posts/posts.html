@@ -1,0 +1,59 @@
+{% extends "home.html" %}
+{% block content %}
+    {% for obj in page_obj  %}
+      <div class="col-sm-6 col-md-6">
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    ×</button>
+                <span class="glyphicon glyphicon-record"></span> <strong>{{ obj.title }}</strong>
+                <hr class="message-inner-separator">
+                <p>{{ obj.content }}</p>
+                    
+                    
+                    
+                <div class='d-flex flex-row-reverse'>
+                <div class="p-2">
+                  <a href="{{obj.get_absolute_url}}" style="padding: 1px 2px" class="btn btn-xs btn-warning pull-right">
+                        {{ obj.author }}
+                  </a>
+                </div>
+                {% if user == obj.author %}
+                <div class="p-2">
+                  <a href="{{ obj.edit_absolute_url }}" style="padding: 1px 2px" class="btn btn-xs btn-warning pull-right">
+                      Edit
+                  </a>
+                </div>
+                {% endif %}
+                
+                <div class="p-2"><span >{{ obj.post_date}}</span></div>
+                </div>
+                    
+            </div>
+        </div>
+    {% endfor %}
+
+<nav aria-label="...">
+  <ul class="pagination" style="margin-left: 15px">
+    {% if page_obj.has_previous %}
+        <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number}}" tabindex="-1">Previous</a>
+        </li>
+    {% endif %}
+    {% if  page_obj.has_other_pages %}
+            <li class="page-item active">
+      <a class="page-link" href="?page={{ page_obj.number}}">{{ page_obj.number }}<span class="sr-only">(current)</span></a>
+    </li>
+    {% endif %}
+        {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+    {% if user.is_authenticated %}
+    <a href="{% url 'posts:create' %}" style="padding: 6px 10px; margin-left: 15px" class="btn btn-xs btn-warning pull-right">
+      New post
+    </a>
+    {% endif %}
+{% endblock %}

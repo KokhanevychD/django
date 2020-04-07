@@ -1,0 +1,16 @@
+[
+  {
+    "model": "posts.tag",
+    "pk": 1,
+    "fields": {
+      "name": "News"
+    }
+  },
+  {
+    "model": "posts.tag",
+    "pk": 2,
+    "fields": {
+      "name": "Politics"
+    }
+  }
+]
