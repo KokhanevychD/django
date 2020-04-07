@@ -2,16 +2,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.paginator import Paginator
-from posts.models import Article
+from posts.models import Article, Tag
 from posts.forms import ArticleForm
 from django.http import HttpResponse
 
 
-def article_list_view(request, user_name=None):
+def article_list_view(request, user_name=None, tag=None):
 
     if user_name:
         user = User.objects.get(username=user_name)
         queryset = user.author.all()
+    elif tag:
+        tag = Tag.objects.get(name=tag)
+        queryset = tag.articles.all()
     else:
         queryset = Article.objects.all()
     paginator = Paginator(queryset, 3)
@@ -22,7 +25,6 @@ def article_list_view(request, user_name=None):
         'page_obj': page_obj,
     }
     return render(request, 'posts/posts.html', context)
-
 
 def article_create_view(request):
 

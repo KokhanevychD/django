@@ -14,5 +14,5 @@ urlpatterns = [
     path('new/', article_create_view, name='create'),
     path('edit/<int:id>', article_edit_view, name='edit'),
     path('search/', article_search, name='search'),
-
+    path('tags/<str:tag>', article_list_view, name='tag'),
 ]

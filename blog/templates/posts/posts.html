@@ -6,6 +6,12 @@
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
                     ×</button>
                 <span class="glyphicon glyphicon-record"></span> <strong>{{ obj.title }}</strong>
+                {% if obj.tags %}
+                  {% for tag_item in obj.tags.all  %}
+                  
+                    <a href="{% url 'posts:tag' tag=tag_item.name %}"><span class="badge badge-secondary">{{ tag_item }}</span></a>
+                  {% endfor %}
+                {% endif %}
                 <hr class="message-inner-separator">
                 <p>{{ obj.content }}</p>
                     

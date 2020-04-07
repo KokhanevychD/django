@@ -16,7 +16,7 @@ class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
     post_date = models.DateField(auto_now=True)
 
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, related_name='articles')
 
     def get_absolute_url(self):
         return reverse('posts:user-articles', kwargs={
