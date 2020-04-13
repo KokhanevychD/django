@@ -1,6 +1,6 @@
 # from django.forms import ModelForm
 from django import forms
-from .models import Article
+from posts.models import Article, Tag
 
 
 class ArticleForm(forms.ModelForm):
@@ -11,3 +11,7 @@ class ArticleForm(forms.ModelForm):
             'content',
             'tags',
         ]
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = '__all__'

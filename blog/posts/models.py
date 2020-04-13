@@ -23,7 +23,7 @@ class Article(models.Model):
                        'user_name': self.author})
 
     def edit_absolute_url(self):
-        return reverse('posts:edit', kwargs={'id': self.id})
+        return reverse('posts:edit', kwargs={'id': self.id, 'author': self.author})
 
     def del_absolute_url(self):
         return reverse('cabinet:del_obj', kwargs={'id': self.id})

@@ -1,5 +1,13 @@
 {% extends "home.html" %}
 {% block content %}
+    
+    {% if title == user and user.is_superuser %}
+    <div class="col-sm-6 col-md-6">
+       <h6>{{ user }} cabinet</h6>
+       <a href="{% url 'cabinet:new-tag' %}"><span class="badge badge-secondary">new tag</span></a>
+    </div>
+    {% endif %}
+      
     {% for obj in page_obj  %}
       <div class="col-sm-6 col-md-6">
             <div class="alert alert-warning">
@@ -30,7 +38,13 @@
                   </a>
                 </div>
                 {% endif %}
-                
+                {% if user.is_superuser %}
+                <div class="p-2">
+                  <a href="{{ obj.del_absolute_url }}" style="padding: 1px 2px" class="btn btn-xs btn-warning pull-right">
+                  Del
+                  </a>
+                  </div>
+                {% endif %}                
                 <div class="p-2"><span >{{ obj.post_date}}</span></div>
                 </div>
                     

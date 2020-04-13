@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from home.decorators import not_authenticated
 
 
 def home_view(request, permission_check=None):
@@ -7,7 +8,7 @@ def home_view(request, permission_check=None):
     context = {'title': 'My blog'}
     return render(request, 'home.html', context)
 
-
+@not_authenticated
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

@@ -4,6 +4,8 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from posts.models import Article, Tag
 from posts.forms import ArticleForm
+from django.contrib.auth.decorators import login_required
+from posts.decorators import self_author_required
 from django.http import HttpResponse
 
 
@@ -26,12 +28,10 @@ def article_list_view(request, user_name=None, tag=None):
     }
     return render(request, 'posts/posts.html', context)
 
+@login_required
 def article_create_view(request):
 
-    if not request.user.is_authenticated:
-        return redirect('home:redirect')
     article = Article(author=request.user)
-
     form = ArticleForm(request.POST or None, instance=article)
     if form.is_valid():
         form.save()
@@ -44,16 +44,10 @@ def article_create_view(request):
     }
     return render(request, 'posts/create.html', context)
 
-
-def article_edit_view(request, id=None):
-
-    if not request.user.is_authenticated:
-        return redirect('home:redirect')
-    if id:
-        article = get_object_or_404(Article, pk=id)
-        user = User.objects.get(username=request.user)
-        if article.author != user and not user.is_superuser:
-            return redirect('home:redirect')
+@self_author_required
+def article_edit_view(request, id=None, author=None):
+    
+    article = get_object_or_404(Article, pk=id)
     form = ArticleForm(request.POST or None, instance=article)
     if form.is_valid():
         form.save()
