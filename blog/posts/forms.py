@@ -11,6 +11,8 @@ class ArticleForm(forms.ModelForm):
             'content',
             'tags',
         ]
+
+
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag

@@ -18,16 +18,18 @@ class Article(models.Model):
 
     tags = models.ManyToManyField(Tag, related_name='articles')
 
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-post_date']
+
     def get_absolute_url(self):
         return reverse('posts:user-articles', kwargs={
-                       'user_name': self.author})
+                       'author': self.author})
 
     def edit_absolute_url(self):
-        return reverse('posts:edit', kwargs={'id': self.id, 'author': self.author})
+        return reverse('posts:edit', kwargs={'pk': self.id, 'author': self.author})
 
     def del_absolute_url(self):
-        return reverse('cabinet:del_obj', kwargs={'id': self.id})
-
-
-
-
+        return reverse('cabinet:del_obj', kwargs={'pk': self.id})

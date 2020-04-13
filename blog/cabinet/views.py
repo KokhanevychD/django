@@ -1,45 +1,48 @@
-from django.shortcuts import redirect, render, get_object_or_404
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, DeleteView
 from django.contrib.auth.models import User
-from django.core.paginator import Paginator
-from posts.models import Article
+from posts.models import Article, Tag
 from posts.forms import TagForm
-from django.contrib.auth.decorators import login_required
-from cabinet.decorators import supreuser_required
+from django.urls import reverse_lazy
 
-@login_required
-def user_page(request):
 
-    if not request.user.is_superuser:
-        user = User.objects.get(username=request.user)
-        queryset = user.author.all()
-    else:
-        queryset = Article.objects.all()
-    paginator = Paginator(queryset, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'title': request.user,
-        'page_obj': page_obj,
-    }
-    return render(request, 'cabinet/cabinet.html', context)
+class CabinetListView(ListView):
+    model = Article
+    context_object_name = 'obj_list'
+    template_name = 'cabinet/cabinet.html'
 
-@supreuser_required
-def delete_view(request, id=None):
-    article = get_object_or_404(Article, pk=id)
-    article.delete()
-    return redirect('cabinet:cabinet')
+    def get_queryset(self):
+        if not self.request.user.is_superuser:
+            user = User.objects.get(username=self.request.user)
+            return user.author.all()
+        else:
+            return Article.objects.all()
 
-@login_required
-def tag_create_view(request):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.request.user
+        context['cabinet'] = f'This is {self.request.user} cabinet'
+        return context
 
-    if not request.user.is_superuser:
-        return redirect('home:redirect')
-    form = TagForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('cabinet:cabinet')
-    context = {
-        'title': "New tag",
-        'form': form,
-    }
-    return render(request, 'posts/create.html', context)
+    paginate_by = 3
+
+
+class ArticleDeleteView(DeleteView):
+    model = Article
+    success_url = reverse_lazy('cabinet:cabinet')
+
+
+class TagCreateView(CreateView):
+    model = Tag
+    form_class = TagForm
+    template_name = 'posts/create.html'
+    success_url = reverse_lazy('cabinet:cabinet')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'New Tag'
+        return context

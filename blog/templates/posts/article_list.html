@@ -1,14 +1,15 @@
 {% extends "home.html" %}
 {% block content %}
-    
-    {% if title == user and user.is_superuser %}
+    {% if 'cabinet' %}
     <div class="col-sm-6 col-md-6">
-       <h6>{{ user }} cabinet</h6>
-       <a href="{% url 'cabinet:new-tag' %}"><span class="badge badge-secondary">new tag</span></a>
+       <h6>{{ cabinet }}</h6>
+        {% if user.is_superuser %}
+          <a href="{% url 'cabinet:new-tag' %}"><span class="badge badge-secondary">new tag</span></a>
+        {% endif %}
     </div>
     {% endif %}
       
-    {% for obj in page_obj  %}
+    {% for obj in obj_list  %}
       <div class="col-sm-6 col-md-6">
             <div class="alert alert-warning">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
@@ -16,7 +17,6 @@
                 <span class="glyphicon glyphicon-record"></span> <strong>{{ obj.title }}</strong>
                 {% if obj.tags %}
                   {% for tag_item in obj.tags.all  %}
-                  
                     <a href="{% url 'posts:tag' tag=tag_item.name %}"><span class="badge badge-secondary">{{ tag_item }}</span></a>
                   {% endfor %}
                 {% endif %}
