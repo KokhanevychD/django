@@ -5,7 +5,12 @@
        <h6>{{ cabinet }}</h6>
         {% if user.is_superuser %}
           <a href="{% url 'cabinet:new-tag' %}"><span class="badge badge-secondary">new tag</span></a>
-        {% endif %}
+              {% endif %}
+          <a href="{% url 'cabinet:avatar' %}"><span class="badge badge-secondary">avatar</span></a>
+          
+          {% if 'avatar' %}
+            <img src='{{ avatar.url }}'>
+          {% endif %}
     </div>
     {% endif %}
       
