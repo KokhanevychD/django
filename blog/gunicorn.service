@@ -1,0 +1,12 @@
+[unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/sickrifel/Documents/github/django/blog
+ExecStart=/home/sickrifel/Documents/github/django/blog/venv/bin/gunicorn --access-logfile - --workers 2 --bind unix:/home/sickrifel/Documents/github/django/blog/blog.sock blog.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
