@@ -9,11 +9,11 @@ from django.db.models import Q
 
 class ArticleList(ListView):
     model = Article
-    context_object_name = 'obj_list'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Articles'
+
         return context
 
     paginate_by = 3

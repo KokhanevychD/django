@@ -1,15 +1,16 @@
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView, DeleteView
-from django.contrib.auth.models import User
-from posts.models import Article, Tag
-from cabinet.forms import AvatarForm
-from posts.forms import TagForm
 from django.urls import reverse_lazy
+from django.contrib.auth.models import User
+
+from cabinet.forms import AvatarForm
+from cabinet.models import Subscription
+from posts.models import Article, Tag
+from posts.forms import TagForm
 
 
 class CabinetListView(ListView):
     model = Article
-    context_object_name = 'obj_list'
     template_name = 'cabinet/cabinet.html'
 
     def get_queryset(self):
@@ -29,6 +30,7 @@ class CabinetListView(ListView):
             context['avatar'] = self.user.avatar.avatar
         except:
             pass
+
         return context
 
     paginate_by = 3
@@ -44,10 +46,6 @@ class TagCreateView(CreateView):
     form_class = TagForm
     template_name = 'posts/create.html'
     success_url = reverse_lazy('cabinet:cabinet')
-
-    def form_valid(self, form):
-        self.object = form.save()
-        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,3 +63,23 @@ class UploadAvatar(CreateView):
         self.object.user = self.request.user
         self.object.save()
         return super().form_valid(form)
+
+
+class CreateSubscription(CreateView):
+    model = Subscription
+    fields = ['author_sub']
+    template_name = 'posts/create.html'
+    success_url = reverse_lazy('cabinet:cabinet')
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj.save()
+        return super().form_valid(form)
+
+
+class UpdateSubscription(UpdateView):
+    model = Subscription
+    template_name = 'posts/create.html'
+    fields = ['author_sub']
+    success_url = reverse_lazy('cabinet:cabinet')

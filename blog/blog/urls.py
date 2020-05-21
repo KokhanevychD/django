@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from blog import settings
-from django.contrib.staticfiles.urls import static
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

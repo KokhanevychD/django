@@ -1,20 +1,29 @@
 {% extends "home.html" %}
 {% block content %}
-    {% if 'cabinet' %}
+
+    {% if cabinet %}
+
     <div class="col-sm-6 col-md-6">
        <h6>{{ cabinet }}</h6>
         {% if user.is_superuser %}
           <a href="{% url 'cabinet:new-tag' %}"><span class="badge badge-secondary">new tag</span></a>
-              {% endif %}
+        {% endif %}
           <a href="{% url 'cabinet:avatar' %}"><span class="badge badge-secondary">avatar</span></a>
           
+         {% if request.user.sub_set.count < 1 %}
+                      <a href="{% url 'cabinet:sub' %}"><span class="badge badge-secondary">subscription</span></a>
+         {% else %}
+                      <a href="{% url 'cabinet:sub-update' pk=request.user.pk%}"><span class="badge badge-secondary">subscription</span></a>
+         {% endif %}
+
           {% if 'avatar' %}
             <img src='{{ avatar.url }}'>
           {% endif %}
     </div>
+
     {% endif %}
       
-    {% for obj in obj_list  %}
+    {% for obj in object_list  %}
       <div class="col-sm-6 col-md-6">
             <div class="alert alert-warning">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
@@ -36,7 +45,7 @@
                         {{ obj.author }}
                   </a>
                 </div>
-                {% if user == obj.author %}
+                {% if user == obj.author or user.is_superuser and cabinet%}
                 <div class="p-2">
                   <a href="{{ obj.edit_absolute_url }}" style="padding: 1px 2px" class="btn btn-xs btn-warning pull-right">
                       Edit

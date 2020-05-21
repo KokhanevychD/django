@@ -14,7 +14,7 @@ class Article(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
-    post_date = models.DateField(auto_now=True)
+    post_date = models.DateTimeField(auto_now_add=True)
 
     tags = models.ManyToManyField(Tag, related_name='articles')
 
@@ -29,7 +29,8 @@ class Article(models.Model):
                        'author': self.author})
 
     def edit_absolute_url(self):
-        return reverse('posts:edit', kwargs={'pk': self.id, 'author': self.author})
+        return reverse('posts:edit', kwargs={'pk': self.id,
+                       'author': self.author})
 
     def del_absolute_url(self):
         return reverse('cabinet:del_obj', kwargs={'pk': self.id})
