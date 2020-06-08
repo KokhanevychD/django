@@ -61,7 +61,6 @@ class UploadAvatar(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
-        self.object.save()
         return super().form_valid(form)
 
 
@@ -72,9 +71,8 @@ class CreateSubscription(CreateView):
     success_url = reverse_lazy('cabinet:cabinet')
 
     def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.user = self.request.user
-        obj.save()
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
         return super().form_valid(form)
 
 

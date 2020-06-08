@@ -1,7 +1,9 @@
 
 import os
 
-from blog.gmail import password, mail
+from django.utils import timezone
+
+from blog.gmail import mail, password
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,13 +30,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # installed apps
+    # 3d party apps
     'crispy_forms',
     'celery',
+    'rest_framework',
     # my apps
     'blog',
     'posts',
     'cabinet',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +128,36 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = 'home:home'
 LOGOUT_REDIRECT_URL = 'home:home'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer', ),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'ACCESS_TOKEN_LIFETIME': timezone.timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timezone.timedelta(minutes=15),
+
+    'ALGORITHM': 'HS256',
+    'SIGNIN_KEY': SECRET_KEY,
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+}
+
+REST_USE_JWT = True
 
 # celery
 CELERY_BROKER_URL = 'redis://localhost:6379'

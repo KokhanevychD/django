@@ -1,5 +1,5 @@
 from __future__ import absolute_import, unicode_literals
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from celery.decorators import periodic_task
 from celery.task.schedules import crontab
@@ -12,10 +12,9 @@ from cabinet.models import Subscription
 from blog.gmail import mail as my_mail
 
 
-
-@periodic_task(run_every=(crontab(minute='*/1')), name='subscription_mailer')
+@periodic_task(run_every=(crontab(minute='*/15')), name='subscription_mailer')
 def subscription_mailer():
-    period_start = timezone.now() - timedelta(seconds=60)
+    period_start = timezone.now() - timedelta(minutes=15)
     queryset = Article.objects.filter(post_date__gte=period_start)
     to_send_dict = {}
     for article in queryset:
