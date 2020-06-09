@@ -1,6 +1,7 @@
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
 
+from api.permissions import AuthorOrAdmin
 from api.serializers import (ArticlePOSTSerializer, ArticleSerializer,
                              AvatarSerializer, SubscriptionGETSerializer,
                              SubscriptionSerializer, TagSerializer)
@@ -21,6 +22,7 @@ class ArtListCreateAPI(ListCreateAPIView):
 
 class ArtRetrieveUpdateDestroyAPI(RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
+    permission_classes = [AuthorOrAdmin]
 
     def get_serializer_class(self):
         if self.request.method in ['POST', 'PUT', 'PATCH']:
