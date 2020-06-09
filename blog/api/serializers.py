@@ -35,16 +35,17 @@ class ArticlePOSTSerializer(ArticleSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user = UserSerializer(read_only=True)
+    author_sub = UserSerializer(many=True)
 
     class Meta:
         model = Subscription
         fields = '__all__'
 
 
-class SubscriptionGETSerializer(SubscriptionSerializer):
-    user = UserSerializer(read_only=True)
-    author_sub = UserSerializer(many=True)
+class SubscriptionPOSTSerializer(SubscriptionSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    author_sub = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
 
 
 class AvatarSerializer(serializers.ModelSerializer):
@@ -52,4 +53,8 @@ class AvatarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Avatar
-        fields = '__all__'
+        fields = ['pk', 'user', 'avatar']
+
+
+class AvatarPOSTSerializer(AvatarSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
