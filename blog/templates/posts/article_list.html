@@ -10,7 +10,7 @@
         {% endif %}
           <a href="{% url 'cabinet:avatar' %}"><span class="badge badge-secondary">avatar</span></a>
           
-         {% if request.user.sub.count < 1%}
+         {% if not request.user.sub %}
                       <a href="{% url 'cabinet:sub' %}"><span class="badge badge-secondary">subscription</span></a>
          {% else %}
                       <a href="{% url 'cabinet:sub-update' pk=request.user.sub.pk%}"><span class="badge badge-secondary">subscription</span></a>
