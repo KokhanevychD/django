@@ -22,7 +22,7 @@ urlpatterns = [
     path('subscriptions/',
          SubListCreateAPI.as_view(), name='subscription-list'),
     path('subscriptions/<int:pk>',
-         SubRetrieveUpdateDestroyAPI.as_view(), name='subscription-list'),
+         SubRetrieveUpdateDestroyAPI.as_view(), name='subscription-detail'),
     path('tags/', TagListCreateAPI.as_view(), name='tag-list'),
     path('tags/<int:pk>',
          TagRetrieveUpdateDestroyAPI.as_view(), name='tag-detail'),
