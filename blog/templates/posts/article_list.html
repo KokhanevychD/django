@@ -8,7 +8,15 @@
         {% if user.is_superuser %}
           <a href="{% url 'cabinet:new-tag' %}"><span class="badge badge-secondary">new tag</span></a>
         {% endif %}
+
+        {% if not request.user.avatar %}
           <a href="{% url 'cabinet:avatar' %}"><span class="badge badge-secondary">avatar</span></a>
+        {% else %}
+          <a href="{% url 'cabinet:avatar-update' pk=request.user.avatar.pk %}"><span class="badge badge-secondary">avatar</span></a>
+
+        {% endif %}
+          
+         
           
          {% if not request.user.sub %}
                       <a href="{% url 'cabinet:sub' %}"><span class="badge badge-secondary">subscription</span></a>

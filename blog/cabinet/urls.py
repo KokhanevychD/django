@@ -5,6 +5,7 @@ from cabinet.views import (CabinetListView,
                            TagCreateView,
                            ArticleDeleteView,
                            UploadAvatar,
+                           UpdateAvatar,
                            CreateSubscription,
                            UpdateSubscription,)
 from cabinet.decorators import supreuser_required
@@ -24,7 +25,9 @@ urlpatterns = [
     path('new/tag/',
          supreuser_required(TagCreateView.as_view()), name='new-tag'),
 
-    path('avatar/', UploadAvatar.as_view(), name='avatar'),
+    path('avatar/', login_required(UploadAvatar.as_view()), name='avatar'),
+
+    path('avatar/edit/<int:pk>', login_required(UpdateAvatar.as_view()), name='avatar-update'),
 
     path('sub/', login_required(CreateSubscription.as_view()), name='sub'),
 

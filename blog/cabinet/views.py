@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 
 from cabinet.forms import AvatarForm
-from cabinet.models import Subscription
+from cabinet.models import Subscription, Avatar
 from posts.models import Article, Tag
 from posts.forms import TagForm
 
@@ -62,6 +62,13 @@ class UploadAvatar(CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         return super().form_valid(form)
+
+
+class UpdateAvatar(UpdateView):
+    model = Avatar
+    template_name = 'cabinet/user_avatar.html'
+    fields = ['avatar']
+    success_url = reverse_lazy('cabinet:cabinet')
 
 
 class CreateSubscription(CreateView):

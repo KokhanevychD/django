@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import token_obtain_pair, token_refresh
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls', namespace='home')),
-    path('articles/', include('posts.urls', namespace='posts')),
+    path('posts/', include('posts.urls', namespace='posts')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('cabinet/', include('cabinet.urls', namespace='cabinet')),
     path('api/', include('api.urls', namespace='api')),
