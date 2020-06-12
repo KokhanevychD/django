@@ -10,14 +10,15 @@ $('#listbutton').click(function(){
             container.find('.tagsdiv').empty();
             $('.articlelist').empty();
 
-            for (let idx = 0; idx < data.results.length; idx++) {
-                current_data = data.results[idx];
+            for (idx in data.results) {
+                current_data = data.results[idx]
                 let clone = container.clone().css('display', '');
                 clone.find('.title').text(current_data.title);
 
-                for (let idx = 0; idx < current_data.tags.length; idx++){
+                for (idx in current_data.tags){
+                    item = current_data.tags[idx]
                     let new_tag = tag.clone();
-                    new_tag.find('.badge').text(current_data.tags[idx].name)
+                    new_tag.find('.badge').text(item.name)
                     new_tag.appendTo(clone.find('.tagsdiv'))
                 };
 
