@@ -1,9 +1,12 @@
+from django.shortcuts import get_list_or_404
+
 from rest_framework.permissions import IsAdminUser
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
 
 from api.permissions import AuthorOrAdmin, UserOrAdmin
 from api.serializers import (ArticlePOSTSerializer, ArticleSerializer,
+                             ArticleQuerySerializer,
                              AvatarSerializer, AvatarPOSTSerializer,
                              SubscriptionPOSTSerializer,
                              SubscriptionSerializer, TagSerializer,
@@ -21,6 +24,21 @@ class ArtListCreateAPI(ListCreateAPIView):
         if self.request.method in ['POST', 'PUT', 'PATCH']:
             return ArticlePOSTSerializer
         return ArticleSerializer
+
+    def get_queryset(self):
+        if self.request.query_params:
+            serializer = ArticleQuerySerializer(data=self.request.query_params)
+            serializer.is_valid(raise_exception=True)
+
+            if 'author' in serializer.validated_data.keys():
+                usr = serializer.validated_data['author']
+                self.queryset = get_list_or_404(Article, author__username=usr)
+
+            elif 'tags' in serializer.validated_data.keys():
+                tags = serializer.validated_data['tags'].split(',')
+                self.queryset = get_list_or_404(Article, tags__name__in=tags)
+
+        return self.queryset
 
 
 class ArtRetrieveUpdateDestroyAPI(RetrieveUpdateDestroyAPIView):

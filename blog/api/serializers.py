@@ -34,6 +34,11 @@ class ArticlePOSTSerializer(ArticleSerializer):
                                               many=True)
 
 
+class ArticleQuerySerializer(serializers.Serializer):
+    author = serializers.CharField(required=False)
+    tags = serializers.CharField(required=False)
+
+
 class SubscriptionSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     author_sub = UserSerializer(many=True)

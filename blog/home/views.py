@@ -15,7 +15,7 @@ class SignUp(CreateView):
 def home_view(request, permission_check=None):
 
     context = {'title': 'My blog'}
-    return render(request, 'home.html', context)
+    return render(request, 'base.html', context)
 
 
 def permission_redirect(request):
@@ -23,4 +23,4 @@ def permission_redirect(request):
         'title': 'My blog',
         'message': 'Permission denied',
     }
-    return render(request, 'home.html', context)
+    return render(request, 'base.html', context)

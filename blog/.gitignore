@@ -1,8 +1,12 @@
 **/venv
 **/*.pyc
 **/.vscode
-static/**
 media/**
+css/
+fonts/
+docs/
+img/
+js/
 **/gmail.py
 *~
 __pycache__

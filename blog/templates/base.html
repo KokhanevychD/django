@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% if title %}
     <title>{{ title }}</title>
 {% else %}
@@ -55,7 +56,50 @@
 <h3>{{ message }}</h3>
 {% endif %}
 {% block content %}
+
+    <a style="padding: 6px 10px; margin-left: 15px" class="btn btn-xs btn-warning pull-right;" id="listbutton">
+      Article list
+    </a>
+
+    <div class="col-sm-6 col-md-6 articlelist" >
+
+      <div class="alert alert-warning" style="display: none">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+
+          <strong class="title"></strong>
+
+          <div class='tagsdiv'>
+          <a class="tags" href="">
+            <span class="badge badge-secondary"></span>
+          </a>
+          </div>
+
+          <hr class="message-inner-separator">
+
+          <p class='content'></p>
+
+          <div class='d-flex flex-row-reverse'>
+          <div class="p-2">
+
+            <a href="" style="padding: 1px 2px" class="btn btn-xs btn-warning pull-right author" >
+            </a>
+
+          </div>
+
+          <div class="p-2"><span class='postdate' ></span></div>
+          </div>
+              
+      </div>
+
+    </div>
+
 {% endblock %}
   </body>
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+ 
+ {% block script %}
+   {% load static %}
+  <script src="{% static 'ajax/ajax.js' %}"></script>
+ {% endblock script %}
+    
 </html>
