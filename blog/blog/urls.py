@@ -15,5 +15,5 @@ urlpatterns = [
     path('api/token/', token_obtain_pair, name='token_obtain_pair'),
     path('api/token/refresh/', token_refresh, name='token_refresh'),
 ]
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
