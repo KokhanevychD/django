@@ -12,7 +12,7 @@ from cabinet.models import Subscription
 from blog.gmail import mail as my_mail
 
 
-@periodic_task(run_every=(crontab(minute='*/15')), name='subscription_mailer')
+@periodic_task(run_every=(crontab(minute='*/5')), name='subscription_mailer')
 def subscription_mailer():
     period_start = timezone.now() - timedelta(minutes=15)
     queryset = Article.objects.filter(post_date__gte=period_start)
