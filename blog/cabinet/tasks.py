@@ -14,7 +14,7 @@ from blog.gmail import mail as my_mail
 
 @periodic_task(run_every=(crontab(minute='*/5')), name='subscription_mailer')
 def subscription_mailer():
-    period_start = timezone.now() - timedelta(minutes=15)
+    period_start = timezone.now() - timedelta(minutes=5)
     queryset = Article.objects.filter(post_date__gte=period_start)
     to_send_dict = {}
     for article in queryset:
