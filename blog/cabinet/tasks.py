@@ -29,6 +29,6 @@ def subscription_mailer():
         message = str()
         for article in to_send_dict[mail]:
             message += article.title
-        send_mail('new posts from subscribed authors:',
+        send_mail('new posts from authors you subscribed to:',
                   message, my_mail, [mail])
     return f'receivers and articles - {to_send_dict}'
