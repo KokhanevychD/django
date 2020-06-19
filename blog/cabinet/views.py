@@ -15,7 +15,7 @@ class CabinetListView(ListView):
 
     def get_queryset(self):
         if not self.request.user.is_superuser:
-            user = User.objects.get(username=self.request.user)
+            user = self.request.user
             return user.author.all()
         else:
             return Article.objects.all()
@@ -23,7 +23,7 @@ class CabinetListView(ListView):
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
-        self.user = User.objects.get(username=self.request.user)
+        self.user = self.request.user
         context['title'] = self.request.user
         context['cabinet'] = f'This is {self.request.user} cabinet'
         try:
